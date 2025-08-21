@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,31 +21,44 @@ fun ProductListItem(
     onQuantityChange: (Int) -> Unit,
     onItemClick: () -> Unit
 ) {
-    Row(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onItemClick() }
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(8.dp)
+            .clickable { onItemClick() },
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        AsyncImage(
-            model = product.imageUrl,
-            contentDescription = product.name,
-            modifier = Modifier.size(64.dp),
-            contentScale = ContentScale.Crop
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = product.name, style = androidx.compose.material3.MaterialTheme.typography.bodyLarge)
-            Text(text = "$${product.price}", style = androidx.compose.material3.MaterialTheme.typography.bodyMedium)
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { onQuantityChange(quantity - 1) }) {
-                Icon(imageVector = Icons.Default.Remove, contentDescription = "Remove")
-            }
-            Text(text = quantity.toString())
-            IconButton(onClick = { onQuantityChange(quantity + 1) }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            AsyncImage(
+                model = product.imageUrl,
+                contentDescription = product.name,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = product.name, style = MaterialTheme.typography.headlineSmall)
+            Text(text = "$${product.price}", style = MaterialTheme.typography.bodyLarge)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                IconButton(onClick = { onQuantityChange(quantity - 1) }) {
+                    Icon(imageVector = Icons.Default.Remove, contentDescription = "Remove")
+                }
+                Text(
+                    text = quantity.toString(),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
+                IconButton(onClick = { onQuantityChange(quantity + 1) }) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                }
             }
         }
     }
