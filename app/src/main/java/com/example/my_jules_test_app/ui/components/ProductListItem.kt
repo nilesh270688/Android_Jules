@@ -32,7 +32,7 @@ fun ProductListItem(
             modifier = Modifier.padding(16.dp)
         ) {
             AsyncImage(
-                model = product.imageUrl,
+                model = "file:///android_asset/${product.imageName}",
                 contentDescription = product.name,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -41,23 +41,33 @@ fun ProductListItem(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = product.name, style = MaterialTheme.typography.headlineSmall)
-            Text(text = "$${product.price}", style = MaterialTheme.typography.bodyLarge)
+            Text(text = "₹${product.price}", style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                IconButton(onClick = { onQuantityChange(quantity - 1) }) {
-                    Icon(imageVector = Icons.Default.Remove, contentDescription = "Remove")
+
+            if (quantity == 0) {
+                Button(
+                    onClick = { onQuantityChange(1) },
+                    modifier = Modifier.align(Alignment.End)
+                ) {
+                    Text(text = "ADD")
                 }
-                Text(
-                    text = quantity.toString(),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                )
-                IconButton(onClick = { onQuantityChange(quantity + 1) }) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+            } else {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    IconButton(onClick = { onQuantityChange(quantity - 1) }) {
+                        Icon(imageVector = Icons.Default.Remove, contentDescription = "Remove")
+                    }
+                    Text(
+                        text = quantity.toString(),
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                    IconButton(onClick = { onQuantityChange(quantity + 1) }) {
+                        Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                    }
                 }
             }
         }

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.my_jules_test_app.data.SampleData
+import com.example.my_jules_test_app.ui.components.CartListItem
 import com.example.my_jules_test_app.ui.viewmodel.CartViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,17 +59,7 @@ fun CartScreen(
                         val product = products.find { it.id == productId }
                         val quantity = cartItems[productId] ?: 0
                         if (product != null) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(text = product.name, modifier = Modifier.weight(1f))
-                                Text(text = "Qty: $quantity")
-                                Spacer(modifier = Modifier.width(16.dp))
-                                Text(text = "$${product.price * quantity}")
-                            }
+                            CartListItem(product = product, quantity = quantity)
                         }
                     }
                 }
@@ -77,7 +68,7 @@ fun CartScreen(
                     (product?.price ?: 0.0) * quantity
                 }
                 Text(
-                    text = "Total: $${totalPrice}",
+                    text = "Total: ₹${totalPrice}",
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier
                         .align(Alignment.End)
