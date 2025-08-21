@@ -43,7 +43,7 @@ fun ProductDetailScreen(
                     .padding(16.dp)
             ) {
                 AsyncImage(
-                    model = it.imageUrl,
+                    model = "file:///android_asset/${it.imageName}",
                     contentDescription = it.name,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -52,7 +52,7 @@ fun ProductDetailScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = it.name, style = MaterialTheme.typography.headlineMedium)
-                Text(text = "$${it.price}", style = MaterialTheme.typography.headlineSmall)
+                Text(text = "₹${it.price}", style = MaterialTheme.typography.headlineSmall)
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = "Description", style = MaterialTheme.typography.titleMedium)
                 Text(text = it.description, style = MaterialTheme.typography.bodyMedium)

@@ -2,10 +2,9 @@ package com.example.my_jules_test_app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Green80 = Color(0xFFB3E5FC)
-val GreenGrey80 = Color(0xFFB2DFDB)
-val LightGreen80 = Color(0xFFC8E6C9)
+val PrimaryGreen = Color(0xFF4CAF50)
+val PrimaryDarkGreen = Color(0xFF388E3C)
+val AccentGreen = Color(0xFF8BC34A)
 
-val Green40 = Color(0xFF0288D1)
-val GreenGrey40 = Color(0xFF00796B)
-val LightGreen40 = Color(0xFF388E3C)
+val LightGrey = Color(0xFFF5F5F5)
+val DarkGrey = Color(0xFF757575)
