@@ -25,9 +25,9 @@ fun ProductListItem(
 ) {
     Card(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(4.dp)
             .clickable { onItemClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         border = BorderStroke(1.dp, Color.LightGray)
     ) {
         Column(
