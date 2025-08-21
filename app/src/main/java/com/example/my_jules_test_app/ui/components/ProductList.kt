@@ -1,7 +1,8 @@
 package com.example.my_jules_test_app.ui.components
 
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,7 +18,7 @@ fun ProductList(
 ) {
     val cartItems by cartViewModel.cartItems.collectAsState()
 
-    LazyColumn {
+    LazyVerticalGrid(columns = GridCells.Fixed(2)) {
         items(products) { product ->
             ProductListItem(
                 product = product,

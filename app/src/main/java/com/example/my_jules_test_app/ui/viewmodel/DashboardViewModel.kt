@@ -1,22 +1,41 @@
 package com.example.my_jules_test_app.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.my_jules_test_app.data.SampleData
 import com.example.my_jules_test_app.data.model.Product
 import com.example.my_jules_test_app.data.model.ProductType
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 
 class DashboardViewModel : ViewModel() {
 
-    private val _products = MutableStateFlow<List<Product>>(emptyList())
-    val products: StateFlow<List<Product>> = _products
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery
 
-    init {
-        _products.value = SampleData.products
+    private val _selectedCategory = MutableStateFlow("All")
+    val selectedCategory: StateFlow<String> = _selectedCategory
+
+    val products: StateFlow<List<Product>> =
+        combine(
+            _searchQuery,
+            _selectedCategory
+        ) { query, category ->
+            SampleData.products.filter { product ->
+                val matchesCategory = when (category) {
+                    "Vegetables" -> product.type == ProductType.VEGETABLE
+                    "Fruits" -> product.type == ProductType.FRUIT
+                    else -> true
+                }
+                val matchesSearch = product.name.contains(query, ignoreCase = true)
+                matchesCategory && matchesSearch
+            }
+        }.stateIn(viewModelScope, SharingStarted.Lazily, SampleData.products)
+
+    fun onSearchQueryChange(query: String) {
+        _searchQuery.value = query
     }
 
-    fun getProductsByType(type: ProductType): List<Product> {
-        return _products.value.filter { it.type == type }
+    fun onCategorySelected(category: String) {
+        _selectedCategory.value = category
     }
 }
