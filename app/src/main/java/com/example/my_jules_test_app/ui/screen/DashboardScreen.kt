@@ -1,6 +1,9 @@
 package com.example.my_jules_test_app.ui.screen
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -27,6 +30,12 @@ fun DashboardScreen(
             value = searchQuery,
             onValueChange = { dashboardViewModel.onSearchQueryChange(it) },
             label = { Text("Search") },
+            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Search") },
+            trailingIcon = {
+                IconButton(onClick = { /* TODO: Open filter dialog */ }) {
+                    Icon(imageVector = Icons.Default.Tune, contentDescription = "Filter")
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
