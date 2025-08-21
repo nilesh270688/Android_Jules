@@ -1,74 +1,66 @@
 package com.example.my_jules_test_app.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.my_jules_test_app.data.model.ProductType
 import com.example.my_jules_test_app.ui.components.ProductList
 import com.example.my_jules_test_app.ui.viewmodel.CartViewModel
 import com.example.my_jules_test_app.ui.viewmodel.DashboardViewModel
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     navController: NavController,
     dashboardViewModel: DashboardViewModel = viewModel(),
     cartViewModel: CartViewModel = viewModel()
 ) {
-    val pagerState = rememberPagerState(pageCount = { 2 })
-    val scope = rememberCoroutineScope()
-    val tabTitles = listOf("Vegetables", "Fruits")
     val products by dashboardViewModel.products.collectAsState()
+    val searchQuery by dashboardViewModel.searchQuery.collectAsState()
+    val selectedCategory by dashboardViewModel.selectedCategory.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TabRow(selectedTabIndex = pagerState.currentPage) {
-            tabTitles.forEachIndexed { index, title ->
-                Tab(
-                    selected = pagerState.currentPage == index,
-                    onClick = {
-                        scope.launch {
-                            pagerState.animateScrollToPage(index)
-                        }
-                    },
-                    text = { Text(text = title) }
-                )
-            }
+        TextField(
+            value = searchQuery,
+            onValueChange = { dashboardViewModel.onSearchQueryChange(it) },
+            label = { Text("Search") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            FilterChip(
+                selected = selectedCategory == "All",
+                onClick = { dashboardViewModel.onCategorySelected("All") },
+                label = { Text("All") }
+            )
+            FilterChip(
+                selected = selectedCategory == "Vegetables",
+                onClick = { dashboardViewModel.onCategorySelected("Vegetables") },
+                label = { Text("Vegetables") }
+            )
+            FilterChip(
+                selected = selectedCategory == "Fruits",
+                onClick = { dashboardViewModel.onCategorySelected("Fruits") },
+                label = { Text("Fruits") }
+            )
         }
 
-        HorizontalPager(state = pagerState) { page ->
-            when (page) {
-                0 -> {
-                    ProductList(
-                        products = products.filter { it.type == ProductType.VEGETABLE },
-                        onItemClick = { product ->
-                            navController.navigate("productDetail/${product.id}")
-                        },
-                        cartViewModel = cartViewModel
-                    )
-                }
-                1 -> {
-                    ProductList(
-                        products = products.filter { it.type == ProductType.FRUIT },
-                        onItemClick = { product ->
-                            navController.navigate("productDetail/${product.id}")
-                        },
-                        cartViewModel = cartViewModel
-                    )
-                }
-            }
-        }
+        ProductList(
+            products = products,
+            onItemClick = { product ->
+                navController.navigate("productDetail/${product.id}")
+            },
+            cartViewModel = cartViewModel
+        )
     }
 }
