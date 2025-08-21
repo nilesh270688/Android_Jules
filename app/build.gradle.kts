@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.my_jules_test_app"
-    compileSdk = 29
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.my_jules_test_app"
         minSdk = 24
-        targetSdk = 29
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
